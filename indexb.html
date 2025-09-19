@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logo ve Carousel</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+header {
+  flex: 0 0 12%;
+  background-color: #FF7F7F;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2%;
+}
+
+.logo-left img, .logo-right img {
+  height: 80%;
+  max-height: 80px;
+  width: auto;
+}
+
+nav {
+  display: flex;
+  gap: 1vw;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0.6em 1em;
+  border-radius: 5px;
+  transition: all 0.3s;
+  font-size: 1vw;
+  min-font-size: 12px;
+}
+
+nav a:hover { background-color: white; color: #DA291C; }
+
+main {
+  flex: 1;
+  display: flex;
+  background-color: #E0E0E0;
+  min-height: 0;
+}
+
+.sidebar {
+  width: 18%;
+  min-width: 150px;
+  background-color: #333;
+  color: white;
+  padding-top: 1em;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.menu { list-style: none; padding: 0; margin: 0; }
+
+.menu > li {
+  border-bottom: 2px solid #FF7F7F;
+  margin-bottom: 0.5em;
+  padding: 0.5em 0;
+}
+
+.menu > li:first-child { border-top: 2px solid #FF7F7F; }
+
+.menu > li > a {
+  display: block;
+  padding: 0.8em 1em;
+  color: white;
+  text-decoration: none;
+  transition: background 0.3s;
+  font-size: 0.9vw;
+  min-font-size: 12px;
+}
+
+.menu > li > a:hover { background-color: #DA291C; }
+
+.submenu { display: none; list-style: none; padding: 0; margin: 0; background: #444; }
+
+.submenu li a {
+  display: block;
+  padding: 0.6em 2em;
+  color: white;
+  text-decoration: none;
+  transition: background 0.3s;
+  font-size: 0.85vw;
+}
+
+.submenu li a:hover { background: #DA291C; }
+
+.menu > li:hover .submenu { display: block; }
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #E0E0E0;
+  padding: 1%;
+  overflow-y: auto;
+  position: relative;
+}
+
+.slideshow-title {
+  width: 100%;
+  text-align: center;
+  font-size: 1.8vw;
+  font-weight: bold;
+  color: #DA291C;
+  margin-bottom: 0.5em;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+}
+
+.slideshow-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.carousel {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  height: 450px;
+  border: 0.5vw solid #DA291C;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.carousel-slide {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0,0,0,0.4);
+  color: white;
+  border: none;
+  font-size: 2em;
+  padding: 0.2em 0.5em;
+  cursor: pointer;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+.carousel-btn:hover { background-color: rgba(0,0,0,0.7); }
+
+.carousel-btn.prev { left: 10px; }
+.carousel-btn.next { right: 10px; }
+
+.caption {
+  font-size: 1.2vw;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 1em;
+}
+
+iframe {
+  width: 100%;
+  height: calc(100vh - 120px);
+  border: none;
+  display: none;
+}
+
+footer {
+  flex: 0 0 8%;
+  background-color: #333;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9vw;
+  min-font-size: 12px;
+}
+
+.announcements-news {
+  display: flex;
+  justify-content: center;
+  gap: 2%;
+  width: 100%;
+  max-width: 1000px;
+  margin: 20px auto 0 auto;
+}
+
+.announcements, .news {
+  flex: 1;
+  background: #fff;
+  border: 2px solid #DA291C;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.announcements h2, .news h2 {
+  text-align: center;
+  color: #DA291C;
+  font-size: 1.4vw;
+  margin-bottom: 10px;
+}
+
+.announcements ul, .news ul {
+  list-style: none;
+  padding: 0;
+}
+
+.announcements li, .news li {
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.announcements li:last-child, .news li:last-child {
+  border-bottom: none;
+}
+
+.announcements a, .news a {
+  font-size: 0.8vw;
+  color: #DA291C;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.announcements a:hover, .news a:hover {
+  text-decoration: underline;
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-left"><img src="logo1.png" alt="Logo 1"></div>
+  <nav id="main-nav">
+    <a href="#" id="home-link">Anasayfa</a>
+    <a href="#">Arıza Kaydı</a>
+    <a href="#">Gerekli Program ve Dosyalar</a>
+    <a href="#">Devam Eden Projeler</a>
+    <a href="#">Hakkımızda</a>
+    <a href="#">İletişim</a>
+  </nav>
+  <div class="logo-right"><img src="logo2.png" alt="Logo 2"></div>
+</header>
+
+<main>
+<!-- Sidebar Menü -->
+<aside class="sidebar" id="sidebar">
+  <ul class="menu">
+    <li>
+      <a href="#">Yenilik ve Eğitim Teknolojileri Hizmetleri Şubesi</a>
+      <ul class="submenu">
+        <li><a href="#" class="load-page" data-page="burogorevleri.html">Büronun Görevleri</a></li>
+        <li><a href="#" class="load-page" data-page="ilyonetici.html">İl Yöneticisinin Görevleri</a></li>
+        <li><a href="#" class="load-page" data-page="projeyonetici.html">Bilişim Koordinatörünün Görevleri</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">YEĞİTEK Okul Sorumlusu</a>
+      <ul class="submenu">
+        <li><a href="#" class="load-page" data-page="gorevlendirme_esaslari.pdf">Görevlendirme Esasları</a></li>
+        <li><a href="#" class="load-page" data-page="gorevvesorumluluklari.pdf">Görev ve Sorumlulukları</a></li>
+        <li><a href="#" class="load-page" data-page="faaliyet_raouru.pdf">Faaliyet Formu</a></li>
+        <li><a href="#" class="load-page" data-page="aylik_bildirim.pdf">Aylık Çalışma Bildirim Raporu</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">PARDUS</a>
+      <ul class="submenu">
+        <li><a href="#" class="load-page" data-page="https://www.oba.gov.tr/egitim/detay/pardus-etap-kursu-537">PARDUS Eğitimleri</a></li>
+        <li><a href="#" class="load-page" data-page="https://pardus.org.tr/surumler">PARDUS İmajları</a></li>
+        <li><a href="#" class="load-page" data-page="https://pardus.org.tr/pardus-23-kurulum-kilavuzu">PARDUS Kurulum Klavuzu</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">AĞ Alt Yapısı</a>
+      <ul class="submenu">
+        <li><a href="#" class="load-page" data-page="https://koycegiz.meb.gov.tr/meb_iys_dosyalar/2016_06/09104152_9000_okul_altyapi_teknik__sartnamesi_sunucusuz_1_2_3_zeyil_islenmis2016sb.pdf">Faz1 Ağ Alt Yapı Şartname ve Ekleri</a></li>
+        <li><a href="#" class="load-page" data-page="https://eskisehir.meb.gov.tr/meb_iys_dosyalar/2015_08/05094225_2.fazyerelalanateknikartnamesi.pdf">Faz2 Ağ Alt Yapı Şartname ve Ekleri</a></li>
+        <li><a href="#" class="load-page" data-page="https://adana.meb.gov.tr/bt/dosya/dokuman/Teknik_sartname_TF9_2.pdf?20241219005115">Faz3 Ağ Alt Yapı Şartname ve Ekleri</a></li>
+        <li><a href="#" class="load-page" data-page="fatih_pys_uyumlastirma_yazisi_lbag3y.pdf">Faz4 Ağ Alt Yapı Şartname ve Ekleri</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">Bilgisayar Laboratuvarları ve Yenilikçi Sınıflar</a>
+      <ul class="submenu">
+        <li><a href="#" class="load-page" data-page="https://adana.meb.gov.tr/bt/dosya/dokuman/iom_sartname_CPM_N.pdf">Yeni Kurulan Bilişim Labaratuvarları</a></li>
+        <li><a href="#" class="load-page" data-page="https://fclturkiye.eba.gov.tr/wp-content/uploads/2024/11/Yenilikci-Siniflar-Uygulama-Kilavuzu.pdf">Yenilikçi Sınıflar</a></li>
+      </ul>
+    </li>
+  </ul>
+</aside>
+
+<!-- İçerik -->
+<section class="content" id="main-content">
+  <div id="home-section">
+    <div class="slideshow-title">
+      Yenilik Ve Eğitim Teknolojiler Teknik Personelince Yapılan Çalışmalar
+    </div>
+
+    <div class="slideshow-container" id="carousel-container">
+      <div class="carousel" id="carousel">
+        <div class="carousel-slide" data-caption="Kablo Bağlantıları Yapıldı"><img src="1.jfif" alt="Resim 1"></div>
+        <div class="carousel-slide" data-caption="Ağ Alt Yapısı Yapıldı"><img src="2.jfif" alt="Resim 2"></div>
+        <div class="carousel-slide" data-caption="Etkileşimli Tahta Kurulumları Yapıldı"><img src="3.jfif" alt="Resim 3"></div>
+        <div class="carousel-slide" data-caption="Projeler ve İçerik Hazırlandı"><img src="4.jfif" alt="Resim 4"></div>
+        <div class="carousel-slide" data-caption="Sistem Testleri Yapıldı"><img src="5.jfif" alt="Resim 5"></div>
+        <div class="carousel-slide" data-caption="Bakım ve Güncellemeler Tamamlandı"><img src="6.jfif" alt="Resim 6"></div>
+
+        <button class="carousel-btn prev">&#10094;</button>
+        <button class="carousel-btn next">&#10095;</button>
+      </div>
+      <div class="caption" id="carousel-caption">Kablo Bağlantıları Yapıldı</div>
+    </div>
+
+    <div class="announcements-news">
+      <div class="announcements">
+        <h2>Duyurular</h2>
+        <ul>
+          <li>YEGİTEK Okul Sorumlusu Başvuruları <a href="#">Devamını Oku</a></li>
+          <li>STEM Koordinotoru Başvuruları <a href="#">Devamını Oku</a></li>
+          <li>Proje Koordinotoru Başvuruları <a href="#">Devamını Oku</a></li>
+          <li>Yenilikçi Sınıf Eğitimi <a href="#">Devamını Oku</a></li>
+        </ul>
+      </div>
+      <div class="news">
+        <h2>Haberler</h2>
+        <ul>
+          <li>Demir Çelik Lisesi ve Bayram Demir RAM'ın İnternet bağlantıları yapıldı. <a href="#">Devamını Oku</a></li>
+          <li>İmam Hatip Anadolu Lisesi Etkileşimli Tahtalarının Montajı Tamamlandı. <a href="#">Devamını Oku</a></li>
+          <li>Yenilikçi Sınıfların Kurulumu Tamamlanarak  Kullanıma Başlandı. <a href="#">Devamını Oku</a></li>
+          <li>İhtiyacı olan okullarımıza YEGİTEK Teknik Personeli Tarafından Bilgisayar Labaratuvarı Alt Yapısı Kuruldu. <a href="#">Devamını Oku</a></li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+  <iframe id="iframe-content"></iframe>
+</section>
+</main>
+
+<footer>© 2025 Yenilik ve Eğitim Teknolojileri</footer>
+
+<script>
+// Carousel
+const slides = document.querySelectorAll(".carousel-slide");
+const caption = document.getElementById("carousel-caption");
+let current = 0;
+
+function showSlide(n) {
+  slides.forEach((slide, i) => {
+    slide.style.transform = `translateX(${100 * (i - n)}%)`;
+  });
+  caption.textContent = slides[n].dataset.caption;
+}
+
+document.querySelector(".carousel-btn.prev").addEventListener("click", () => {
+  current = (current - 1 + slides.length) % slides.length;
+  showSlide(current);
+});
+
+document.querySelector(".carousel-btn.next").addEventListener("click", () => {
+  current = (current + 1) % slides.length;
+  showSlide(current);
+});
+
+setInterval(() => {
+  current = (current + 1) % slides.length;
+  showSlide(current);
+}, 5000);
+
+showSlide(current);
+
+// Menüden iframe yükleme
+const links = document.querySelectorAll('.sidebar .load-page');
+const iframe = document.getElementById('iframe-content');
+const homeSection = document.getElementById('home-section');
+const carouselContainer = document.getElementById('carousel-container');
+
+links.forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const page = this.getAttribute('data-page');
+    if (page && page !== "#") {
+      homeSection.style.display = 'none';
+      iframe.style.display = 'block';
+      iframe.setAttribute('src', page);
+    }
+  });
+});
+
+// Anasayfa linki
+const homeLink = document.getElementById('home-link');
+homeLink.addEventListener('click', function(e) {
+  e.preventDefault();
+  iframe.style.display = 'none';
+  iframe.setAttribute('src', '');
+  homeSection.style.display = 'block';
+});
+</script>
+</body>
+</html>
